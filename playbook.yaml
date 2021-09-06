@@ -46,12 +46,12 @@
         name: docker
         name: docker-compose
 #clone the Sample application git repository from https://github.com/docker/getting-started/tree/master/app
-    # - name: Clone a github repository
-    #   git:
-    #     repo: https://github.com/StefanMihail/ansible_todo_app.git
-    #     dest: /home/ubuntu/project/
-    #     clone: yes
-    #     update: yes
+    - name: Clone a github repository
+      git:
+        repo: https://github.com/StefanMihail/ansible_todo_app.git
+        dest: /home/ubuntu/project/
+        clone: yes
+        update: yes
 #Start the docker service
     - name: Start the docker service, if not started
       ansible.builtin.service:
@@ -71,7 +71,7 @@
                 - "{{ ports.application_port_mapping }}"
               working_dir: /app
               volumes:
-                - /home/ubuntu/project/sample_app/app/:/app
+                - /home/ubuntu/project/ansible_todo_app/app/:/app
               environment:
                 MYSQL_HOST: mysql
                 MYSQL_USER: root
