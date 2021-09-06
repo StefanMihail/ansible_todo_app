@@ -1,0 +1,3 @@
+---
+ports:
+  application_port_mapping: 3002:3000

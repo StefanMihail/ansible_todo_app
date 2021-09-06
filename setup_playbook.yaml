@@ -1,0 +1,120 @@
+---
+
+#Install the necessaty packages on the target machine
+
+- hosts: aws
+
+  vars_files:
+    - portvars.yaml
+  # Vars: variables that will apply to the play, on all target systems
+  # vars_prompt:
+  #   - name: password
+  #     private: True
+ 
+  # Tasks: the list of tasks that will be executed within the playbook
+  tasks:
+    #Git
+    - name: Install git
+      apt:
+       name: git
+       state: present
+       update_cache: yes
+    - name: Install aptitude using apt
+      apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
+    #Dependencyes
+    - name: Install required system packages
+      apt: name={{ item }} state=latest update_cache=yes
+      loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools']
+
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu bionic stable
+        state: present
+    #Docker 
+    - name: Update apt and install Docker-CE
+      apt: update_cache=yes name=docker-ce state=latest
+
+    - name: Update apt and install Docker module for python
+      apt: update_cache=yes name=docker-ce state=latest
+    - name: Install Docker Module for Python
+      pip:
+        name: docker
+        name: docker-compose
+#clone the Sample application git repository from https://github.com/docker/getting-started/tree/master/app
+    - name: Clone a github repository
+      git:
+        repo: https://github.com/StefanMihail/ansible_todo_app.git
+        dest: /home/ubuntu/
+        clone: yes
+        update: yes
+#Start the docker service
+    - name: Start the docker service, if not started
+      ansible.builtin.service:
+        name: docker
+        state: started
+
+#Create a docker-compose file
+    - community.docker.docker_compose:
+        project_name: todo_app
+        definition:
+          version: '3.7'
+          services:       
+            app:
+              image: node:12-alpine
+              command: sh -c "yarn install && yarn run dev"
+              ports:
+                - "{{ ports.application_port_mapping }}"
+              working_dir: /app
+              volumes:
+                - /home/ubuntu/ansible_todo_app/app:/app
+              environment:
+                MYSQL_HOST: mysql
+                MYSQL_USER: root
+                MYSQL_PASSWORD: root
+                MYSQL_DB: todos 
+              depends_on:
+                - mysql
+            mysql:
+              image: mysql:5.7
+              volumes:
+                - todo-mysql-data:/var/lib/mysql
+              environment:
+                MYSQL_ROOT_PASSWORD: root
+                MYSQL_DATABASE: todos  
+          volumes:
+            todo-mysql-data: 
+      register: output
+    - ansible.builtin.debug:
+        var: output
+
+
+
+
+
+    # - name: This command will change the working directory
+    #   ansible.builtin.shell:
+    #     cmd: docker-compose up -d 
+    #     chdir: /home/ubuntu/tmp/sample_app/app/
+#build and start the service 
+#    - name: Create and start services
+#      community.docker.docker_compose:
+#        project_src: /home/ansible/tmp/getting-started/
+#      register: output      
+
+#build the image 
+#- name: Build image and with build args
+#  community.docker.docker_image:
+#    name: myimage
+#    build:
+#      path: /path/to/build/dir
+#      args:
+#        log_volume: /var/log/myapp
+#        listen_port: 8080
+#    source: build
+
+#run the image as a docker compose 
