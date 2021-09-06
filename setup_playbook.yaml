@@ -49,7 +49,7 @@
     - name: Clone a github repository
       git:
         repo: https://github.com/StefanMihail/ansible_todo_app.git
-        dest: /home/ubuntu/
+        dest: /home/ubuntu/project/
         clone: yes
         update: yes
 #Start the docker service
@@ -71,7 +71,7 @@
                 - "{{ ports.application_port_mapping }}"
               working_dir: /app
               volumes:
-                - /home/ubuntu/ansible_todo_app/app:/app
+                - /home/ubuntu/project/ansible_todo_app/app:/app
               environment:
                 MYSQL_HOST: mysql
                 MYSQL_USER: root
@@ -92,29 +92,3 @@
     - ansible.builtin.debug:
         var: output
 
-
-
-
-
-    # - name: This command will change the working directory
-    #   ansible.builtin.shell:
-    #     cmd: docker-compose up -d 
-    #     chdir: /home/ubuntu/tmp/sample_app/app/
-#build and start the service 
-#    - name: Create and start services
-#      community.docker.docker_compose:
-#        project_src: /home/ansible/tmp/getting-started/
-#      register: output      
-
-#build the image 
-#- name: Build image and with build args
-#  community.docker.docker_image:
-#    name: myimage
-#    build:
-#      path: /path/to/build/dir
-#      args:
-#        log_volume: /var/log/myapp
-#        listen_port: 8080
-#    source: build
-
-#run the image as a docker compose 
