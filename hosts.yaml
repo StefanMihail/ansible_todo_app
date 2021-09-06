@@ -1,6 +1,6 @@
 aws:
   hosts:
-    3.125.50.222:
+   18.184.81.118:
       ansible_become: true
       ansible_user: ubuntu
       ansible_connection: ssh 
