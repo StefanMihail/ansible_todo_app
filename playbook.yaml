@@ -71,7 +71,7 @@
                 - "{{ ports.application_port_mapping }}"
               working_dir: /app
               volumes:
-                - /home/ubuntu/project/ansible_todo_app/app/:/app
+                - /home/ubuntu/project/sample_app/app:/app
               environment:
                 MYSQL_HOST: mysql
                 MYSQL_USER: root
