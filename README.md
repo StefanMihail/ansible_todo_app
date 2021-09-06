@@ -1,15 +1,15 @@
 ## Automation deployment of a todo sample application with __ansible__.
 
 ## What is this repository for? ###
-#### with this repositiry you can easely automate a deployment for a "todo application" to a preexisting virtual machine.
-#### there is no need for additional configuration or installing of any software, everithing will be confiigured and installed by the ansible playbook.
+#### With this repositiry you can easely automate a deployment for a "todo application" to a preexisting virtual machine.
+#### There is no need for additional configuration or installing of any software, everithing will be confiigured and installed by the ansible playbook.
 
 ## Application architecture overview
 #### The application consis of two tier app, the Web Tier (ToDo App) application container and the database tier application container (MySQL), where the Database is hosted. The database is only accessible from Web Tier.
 #### Web Tier (Todo App) - Where  code is hosted. Front-end application is openly accessible over the internet.
 #### That being said the application is will have a persistant database even after the efemeral containers restart.
+#### We have an application that now stores its data in an external database running in a separate container.
 
-#### we have an application that now stores its data in an external database running in a separate container
 ![Scheme](images/app_overview.png)
 ## Ansible automation workflow overview
 ![Scheme](images/workflow.png)
@@ -28,6 +28,9 @@
 4. run the command  `ansible-playbook playbook.yaml`
 5. waiti untill all the tasks are finished, you should see the below output at the end. 
 6. Access the application on the following address: http://18.185.249.122:3002/ 
+
+## Note:
+Depending on your use case you might consider modifying the __hosts.yaml__ file contents in regards to connectivity detailes to the ansible managed node.
 ```
 "ok":[ 18.185.249.122]"=>"{
   "output":{
