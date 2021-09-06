@@ -5,8 +5,8 @@
 #### there is no need for additional configuration or installing of any software, everithing will be confiigured and installed by the ansible playbook.
 
 ## Application architecture overview
-#### The application consis of two tier app, the Web Tier application container and the database tier application container. Where the Database (MySQL) is hosted. The database is only accessible from Web Tier.
-#### Web Tier - Where  code is hosted. Front-end application is openly accessible over the internet.
+#### The application consis of two tier app, the Web Tier (ToDo App) application container and the database tier application container (MySQL), where the Database is hosted. The database is only accessible from Web Tier.
+#### Web Tier (Todo App) - Where  code is hosted. Front-end application is openly accessible over the internet.
 #### That being said the application is will have a persistant database even after the efemeral containers restart.
 
 #### we have an application that now stores its data in an external database running in a separate container
@@ -15,7 +15,7 @@
 ![Scheme](images/workflow.png)
 
 ## Control Node requirements
-#### For your control node (the machine that runs Ansible), please refer to this hyperlynk: [Installing Ansible on specific operating systems](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-ansible-on-specific-operating-systems)
+#### For your control node (the machine that runs Ansible), please refer to this hyperlynk: [Installing Ansible on specific operating systems](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#id9)
 
 ## Managed Nodes requirements 
 #### Note: currently only Debian-based Linux Distributions are supported by the ansible playbook 
